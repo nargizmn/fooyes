@@ -1,0 +1,180 @@
+﻿@model HomeViewModel
+@{
+    ViewBag.HeaderClass = "transparent-header";
+}
+
+    <!-- HERO SECTION -->
+    <main>
+        <div class="hero-section d-flex flex-column justify-content-center" style="background-image: url(../../uploads/settings/@Model.Setting.HomeHeroSecBgImg);">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <h1>@Model.Setting.HomeHeroSecTitle</h1>
+                        <p>@Model.Setting.HomeHeroSecSubtitle</p>
+                        <form asp-controller="restaurant" asp-action="index">
+                            <div class="search-line row m-0 p-0" style="position:relative;">
+                                <div class="col-10 p-0">
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="search" autocomplete="off" id="search-input" placeholder="Search for restaurants...">
+                                    </div>
+                                </div>
+                                <div class="col-2 p-0 align-self-center">
+                                    <button type="submit">Search</button>
+                                </div>
+                                <div class="list-group" id="result" style="position:absolute; top: 56px; left:0; width:100%; padding:0"></div>
+                            </div>
+                            <div class="mobile-submit-btn row p-0 mt-3">
+                                <button type="submit">Search</button>
+                            </div>
+                        </form>
+                        <div class="search-trendings">
+                            <h4 class="d-inline-block">
+                                Trending: </h4>
+                            <ul class="list-group d-inline-block">
+                                @for (int i = 0; i < Model.TrendingCategories.Count - 1; i++)
+                                {
+                                    <li class="list-group-item d-inline-block p-0"><a asp-controller="restaurant" asp-action="index" asp-route-categoryId="@Model.TrendingCategories[i].Id">@Model.TrendingCategories[i].Name, </a></li>
+                                }
+                                    <li class="list-group-item d-inline-block p-0"><a asp-controller="restaurant" asp-action="index" asp-route-categoryId="@Model.TrendingCategories.Last().Id">@Model.TrendingCategories.Last().Name</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="waves" style="background-image: url(../../assets/images/wave_white.svg);"></div>
+        </div>
+    </main>
+
+    <!-- POPULAR CATEGORIES -->
+    <section class="popular-categories my-5">
+        <div class="container">
+            <div class="main-title d-flex flex-column align-items-center">
+                <span class="main-line"><span></span></span>
+                <h2>Popular Categories</h2>
+                <p>These meals are incredible!</p>
+            </div>
+            <div class="owl-carousel owl-theme owl-drag owl-loaded mt-4">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage">
+                        @foreach (var item in Model.PopularCategories)
+                        {
+                            <div class="owl-item">
+                                <a asp-controller="restaurant" asp-action="index" asp-route-categoryId="@item.Id">
+                                    <span>@item.Restaurants.Where(x=>!x.IsDeleted).Count()</span>
+                                    <img src="~/uploads/categories/@item.Image" alt="@item image ">
+                                    <div class="info">
+                                        <h3>@item.Name</h3>
+                                        <small>Avg price $@(item.Restaurants.SelectMany(x => x.Meals.Where(x=>!x.IsDeleted).Select(x => x.Price)).Count() == 0?0:Math.Round(item.Restaurants.SelectMany(x=>x.Meals.Where(x=>!x.IsDeleted).Select(x=>x.Price)).Average()))</small>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOP RATED RESTAURANTS -->
+    <section class="top-rated">
+        <div class="container">
+            <div class="main-title d-flex flex-column">
+                <span class="main-line"><span></span></span>
+                <h2 class="mt-4">Top Rated Restaurants</h2>
+                <p>Check out our customer's favourite restaurants!</p>
+                <a asp-controller="restaurant" asp-action="index">View All →</a>
+            </div>
+            <div class="row">
+                @foreach (var item in Model.TopRatedRestaurants)
+                {
+                    <div class="restaurant col-xl-6 col-md-12 my-3">
+                        <a asp-controller="restaurant" asp-action="detail" asp-route-id="@item.Id" class="d-flex">
+                            <div class="img-container col-4 me-4">
+                                <img src="~/uploads/restaurants/@item.RestaurantImages.FirstOrDefault(x=>x.IsMainImage)?.Image" alt="@item.Name restaurant image ">
+                            </div>
+                            <div class="flex-column col-7 align-self-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <i>@item.Category.Name</i>
+                                    <span class="rate d-inline-block">@item.Rate</span>
+                                </div>
+                                <div>
+                                    <h3 class="mb-1">@item.Name</h3>
+                                    <span class="address d-inline-block mb-2">@item.Address</span>
+                                    <div>
+                                        @if (item.CampaignId != null && item.Campaign.ExpireDate >= DateTime.Now)
+                                        {
+                                            <span class="discount d-inline-block">-@item.Campaign.DiscountPercent%</span>
+                                            <span class="price">Average price $@Math.Round((double)item.Meals.Select(x => x.DiscountedPrice).Average())</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="price">Average price $@Math.Round(item.Meals.Select(x => x.Price).Average())</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- DELIVERY BANNER -->
+    <section class="delivery my-5">
+        <div class="container">
+            <div class="banner d-flex" style="background-image: url(./uploads/settings/@Model.Setting.HomeBannerSecBgImg);">
+                <div class="info-wrapper col-11">
+                    <span class="d-inline-block">@Model.Setting.HomeBannerSecTitle</span>
+                    <h3>@Model.Setting.HomeBannerSecSubtitle</h3>
+                    <p>@Model.Setting.HomeBannerSecDesc</p>
+                    <a asp-controller="restaurant" asp-action="index">Start Now</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- START ORDERING -->
+    <section class="start-ordering">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            @foreach (var item in Model.OrderFeatures.GetRange(0, Model.OrderFeatures.Count - 1))
+                            {
+                                    <div class="box">
+                                        <div>
+                                            <img src="~/uploads/orderfeatures/@item.Image">
+                                        </div>
+                                        <h3>@item.Title</h3>
+                                        <p>@item.Subtitle</p>
+                                    </div>
+                            }
+                        </div>
+                        <div class="col-lg-6 align-self-center">
+                                    <div class="box">
+                                        <div>
+                                            <img src="~/uploads/orderfeatures/@Model.OrderFeatures.Last().Image">
+                                        </div>
+                                        <h3>@Model.OrderFeatures.Last().Title</h3>
+                                        <p>@Model.OrderFeatures.Last().Subtitle</p>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 offset-1 align-self-center">
+                    <div class="main-title d-flex flex-column m-0">
+                        <span class="main-line"><span></span></span>
+                        <h2 class="my-4">@Model.Setting.HomeOrderSecTitle</h2>
+                        <p>@Model.Setting.HomeOrderSecSubtitle1</p>
+                        <p class="my-4">@Model.Setting.HomeOrderSecSubtitle2</p>
+                        <a asp-controller="account" asp-action="register">Register</a>
+                    </div>
+                </div>
+                <a asp-controller="account" asp-action="register" class="register-now">Register Now!</a>
+            </div>
+        </div>
+    </section>
+

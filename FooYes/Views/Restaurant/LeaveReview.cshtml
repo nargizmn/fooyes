@@ -1,0 +1,52 @@
+﻿@model CreateCommentViewModel
+@{ 
+    ViewBag.HeaderClass = "white-header";
+    Restaurant restaurant = ViewBag.Restaurant;
+}
+    <main class="leave-review">
+        <div class="container mt-3">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="box p-4">
+                        <h1>Write a review for "@restaurant.Name"</h1>
+                        <span>Overall rating</span>
+                        <form method="post">
+                            <div class="row">
+                                <div class="col-md-3 pb-4">
+                                    <label asp-for="FoodRate" for="food-quality">Food Quality</label>
+                                    <span class="food-quality-val">0</span>
+                                    <input asp-for="FoodRate" type="range" min="0" max="10" step="1" value="0" data-orientation="horizontal" id="food-quality">
+                                </div>
+                                <div class="col-md-3 pb-4">
+                                    <label asp-for="ServiceRate" for="service">Service</label>
+                                    <span class="service-val">0</span>
+                                    <input asp-for="ServiceRate" type="range" min="0" max="10" step="1" value="0" data-orientation="horizontal" id="service">
+                                </div>
+                                <div class="col-md-3 pb-4">
+                                    <label asp-for="PunctualityRate" for="punctuality">Punctuality</label>
+                                    <span class="punctuality-val">0</span>
+                                    <input asp-for="PunctualityRate" type="range" min="0" max="10" step="1" value="0" data-orientation="horizontal" id="punctuality">
+                                </div>
+                                <div class="col-md-3 pb-4">
+                                    <label asp-for="PriceRate" for="price">Price</label>
+                                    <span class="price-val">0</span>
+                                    <input asp-for="PriceRate" type="range" min="0" max="10" step="1" value="0" data-orientation="horizontal" id="price">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Title" for="review-title">Title of your review</label>
+                                <input asp-for="Title" id="review-title" class="form-control d-block" type="text" placeholder="If you could say it in one sentence, what would you say?">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Text" for="review">Your review</label>
+                                <textarea asp-for="Text" id="review" class="form-control d-block" style="height: 180px;" placeholder="Write your review to help others learn about this online business"></textarea>
+                            </div>
+                            <input type="hidden" asp-for="RestaurantId" value="@restaurant.Id" />
+                            <button type="submit" class="mt-4">Submit review</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>

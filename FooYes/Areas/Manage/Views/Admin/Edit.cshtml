@@ -1,0 +1,47 @@
+﻿@model AdminUpdateViewModel
+
+@{ 
+    ViewData["Title"] = "Edit admin";
+}
+
+<div class="container">
+    <h1 class="my-5">Update</h1>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="UserName">Username</label>
+            <input type="text" class="form-control" id="name" asp-for="UserName" placeholder="Type admin's username">
+            <span class="text-danger" asp-validation-for="UserName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name">Name</label>
+            <input type="text" class="form-control" id="name" asp-for="Name" placeholder="Type admin's name">
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName">Last Name</label>
+            <input type="text" class="form-control" id="name" asp-for="LastName" placeholder="Type admin's last name">
+            <span class="text-danger" asp-validation-for="LastName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Admin's new password</label>
+            <input type="password" class="form-control" id="name" asp-for="Password" placeholder="Type admin's new password">
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConfirmPassword">Confirm password</label>
+            <input type="password" class="form-control" id="name" asp-for="ConfirmPassword" placeholder="Type admin's new password">
+            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose admin's role</label>
+            <select class="form-control" asp-for="IdentityRole">
+                <option value="Admin">Admin</option>
+                <option value="Editor">Editor</option>
+            </select>
+            <span class="text-danger" asp-validation-for="IdentityRole"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+

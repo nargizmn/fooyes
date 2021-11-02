@@ -1,0 +1,220 @@
+﻿@model DashboardViewModel
+
+@{ 
+    ViewData["Title"] = "Dashboard";
+    List<Order> orders = Model.Orders;
+    int acceptedOrders = orders.Count(x => x.Status == true);
+    int allOrders = orders.Count();
+    int allRestaurantOrders = Model.MostOrderedRestaurants.Sum(x=>x.Meals.Sum(x=>x.OrderItems.Select(x=>x.Order).Count()));
+    List<string> bgColor = new List<string> { "bg-danger", "bg-primary", "bg-success", "bg-info", "bg-warning", "bg-dark", "bg-secondary" };
+    int index = 0;
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Earnings (Monthly)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$@(orders.Where(x=>x.Status==true && x.DeliveryType.ToLower()=="delivery" && x.CreatedAt.Month == DateTime.Now.Month).Sum(x=>x.OrderItems.FirstOrDefault().Meal.Restaurant.DeliveryFee))</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Earnings (Annual)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$@(orders.Where(x=>x.Status==true && x.DeliveryType.ToLower()=="delivery" && x.CreatedAt.Year == DateTime.Now.Year).Sum(x=>x.OrderItems.FirstOrDefault().Meal.Restaurant.DeliveryFee))</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Accepted Orders
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@(acceptedOrders*100/allOrders)%</div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar"
+                                             style="width: @(acceptedOrders*100/allOrders)%" aria-valuenow="@(acceptedOrders*100/allOrders)" aria-valuemin="0"
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Order Requests
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@orders.Count(x => x.Status == null)</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Pending Rider Requests
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.RiderRequests.Count</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                New Contact Messages
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.NewContactMessages.Count</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Pending Comment Requests
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.CommentRequests.Count</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Our Subscribers
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Subscribers.Count</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Content Column -->
+        <div class="col-lg-6 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Our Most Ordered Restaurants</h6>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in Model.MostOrderedRestaurants)
+                    {
+                        <h4 class="small font-weight-bold">
+                            @item.Name
+                        </h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar @bgColor[index]" role="progressbar" style="width: @(item.Meals.Sum(x=>x.OrderItems.Select(x=>x.Order).Count()) * 100 / allRestaurantOrders)%"
+                                 aria-valuenow="@(item.Meals.Sum(x=>x.OrderItems.Select(x=>x.Order).Count()) * 100 / allRestaurantOrders)" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+                        index++;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /.container-fluid -->

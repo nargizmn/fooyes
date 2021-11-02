@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.HeaderClass = "white-header";
+    List<Restaurant> restaurants = ViewBag.Favourites;
+}
+
+<section class="top-rated" style="margin-top:6em;">
+    <div class="container">
+        <div class="main-title d-flex flex-column align-items-center my-5">
+            <span class="main-line"><span></span></span>
+            <h2>Your Wishlist</h2>
+        </div>
+        <div class="row justify-content-center">
+            @if (restaurants.Count>0)
+            {
+                @foreach (var item in restaurants)
+                {
+                    <div class="restaurant col-10 my-3">
+                        <a asp-controller="restaurant" asp-action="detail" asp-route-id="@item.Id" class="d-flex">
+                            <div class="img-container col-4 me-4">
+                                <img src="~/uploads/restaurants/@item.RestaurantImages.FirstOrDefault(x=>x.IsMainImage)?.Image" alt="@item.Name restaurant image ">
+                            </div>
+                            <div class="flex-column col-8 align-self-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <i>@item.Category.Name</i>
+                                    <span class="rate d-inline-block">@item.Rate</span>
+                                </div>
+                                <div>
+                                    <h3 class="mb-1">@item.Name</h3>
+                                    <span class="address d-inline-block mb-2">@item.Address</span>
+                                    <div>
+                                        @if (item.CampaignId != null && item.Campaign.ExpireDate >= DateTime.Now)
+                                        {
+                                            <span class="discount d-inline-block">-@item.Campaign.DiscountPercent%</span>
+                                            <span class="price">Average price $@Math.Round((double)item.Meals.Select(x => x.DiscountedPrice).Average())</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="price">Average price $@Math.Round(item.Meals.Select(x => x.Price).Average())</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-10 my-4" style="padding:7em; background-color:#f4f4f4;">
+                    <h2 style="text-align:center;">You don't have any favourite restaurant.</h2>
+                </div>
+            }
+        </div>
+    </div>
+</section>

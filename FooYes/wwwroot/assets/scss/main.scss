@@ -1,0 +1,28 @@
+//BOOTSTRAP
+@import "../bootstrap/scss/mixins";
+@import "../bootstrap/scss/bootstrap-grid.scss";
+@import "../bootstrap/scss/list-group";
+@import "../bootstrap/scss/pagination";
+@import "../bootstrap/scss/progress";
+@import "../bootstrap/scss/modal";
+@import "../bootstrap/scss/bootstrap-utilities.scss";
+@import "../bootstrap/scss/buttons";
+
+//MIXINS
+@import "./mixins/buttons";
+@import "./mixins/inputs";
+
+// PAGES
+@import "./pages/index";
+@import "./pages/restaurants";
+@import "./pages/details";
+@import "./pages/leave-review";
+@import "./pages/contact";
+@import "./pages/work-with-us";
+@import "./pages/sign-in";
+@import "./pages/order";
+@import "./pages/order-confirmed";
+@import "./pages/404";
+
+//MEDIA
+@import "./media/media";

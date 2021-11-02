@@ -1,0 +1,29 @@
+﻿@model OrderFeature
+@{
+    ViewData["Title"] = "Create New Order Feature";
+}
+
+
+<div class="container">
+    <h1>Create</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Title">Title</label>
+            <input type="text" asp-for="Title" class="form-control" placeholder="Title">
+            <span class="text-danger" asp-validation-for="Title"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Subtitle">Subtitle</label>
+            <textarea type="text" asp-for="Subtitle" class="form-control" placeholder="Subtitle"></textarea>
+            <span class="text-danger" asp-validation-for="Subtitle"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageFile">Upload feature's image</label>
+            <input type="file" asp-for="ImageFile" />
+            <span class="text-danger" asp-validation-for="ImageFile"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+

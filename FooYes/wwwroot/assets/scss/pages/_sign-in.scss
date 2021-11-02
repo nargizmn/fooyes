@@ -1,0 +1,43 @@
+.sign-in{
+    .sign-in-form{
+        h2{
+            font-size: 2rem;
+            text-align: center;
+        }
+        .form-group{
+            position: relative;
+            input{
+                @include text-input;
+                padding: .7em 0 .7em 3em;
+            }
+            i{
+                position: absolute;
+                top: 7px;
+                left: 12px;
+                font-size: 1.5rem;
+                color: #ccc;
+                display: block;
+            }
+        }
+        a{
+            color: #999;
+            font-size: .9rem;
+            font-weight: 400;
+        }
+        button{
+            @include button-primary;
+            padding: .7em 0;
+        }
+        .sign-in-footer{
+            text-align: center;
+            a{
+                color: #e54750;
+                font-size: smaller;
+                &:hover{
+                    color: #222;
+                }
+            }
+        }
+    }
+    
+}

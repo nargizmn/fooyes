@@ -1,0 +1,112 @@
+﻿@model UserUpdateViewModel
+@{
+    ViewBag.HeaderClass = "white-header";
+    AppUser user = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        user = userManager.FindByNameAsync(User.Identity.Name).Result;
+    }
+}
+
+
+<!-- SIGN IN FORM -->
+<main class="sign-in my-5">
+    <div class="container-fluid">
+        <form method="post" autocomplete="off" asp-controller="account" asp-action="edit">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-8">
+                    <div class="sign-in-form">
+                        <h2 class="mb-4">Edit your profile</h2>
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                        <div class="form-group mb-3">
+                            <i class="fas fa-file-alt"></i>
+                            <input type="text" asp-for="Name" class="form-control" placeholder="Name">
+                        </div>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <i class="fas fa-file-alt"></i>
+                            <input type="text" asp-for="LastName" class="form-control" placeholder="Last Name">
+                        </div>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <i class="fas fa-file-alt"></i>
+                            <input type="text" asp-for="Username" class="form-control" placeholder="Username">
+                        </div>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <i class="far fa-envelope"></i>
+                            <input type="email" asp-for="Email" class="form-control" placeholder="Email">
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" asp-for="CurrentPassword" class="form-control" placeholder="Current Password">
+                        </div>
+                        <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                        <button type="submit" class="mt-3">Save Changes</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-5">
+                        <h3 class="mb-5" style="font-size: 2rem; text-align: center;">
+                            Choose your hero</h3">
+                            <ul class="row flex-row custom-radio-box list-group">
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="phoebe-img" class="d-none" type="radio" value="phoebe.jpg" @(user.Image=="phoebe.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="phoebe-img"><img src="~/assets/images/profilepic/phoebe.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="agilm2-img" class="d-none" type="radio" value="agilm2.jpg" @(user.Image=="agilm2.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="agilm2-img"><img src="~/assets/images/profilepic/agilm2.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="diane-img" class="d-none" type="radio" value="diane.jpg" @(user.Image=="diane.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="diane-img"><img src="~/assets/images/profilepic/diane.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="aqilm-img" class="d-none" type="radio" value="aqilm.jpg" @(user.Image=="aqilm.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="aqilm-img"><img src="~/assets/images/profilepic/aqilm.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="ross-img" class="d-none" type="radio" value="ross.jpg" @(user.Image=="ross.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="ross-img"><img src="~/assets/images/profilepic/ross.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="bag-img" class="d-none" type="radio" value="fleabag.jpg" @(user.Image=="fleabag.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="bag-img"><img src="~/assets/images/profilepic/fleabag.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="mike-img" class="d-none" type="radio" value="mike.jpg" @(user.Image=="mike.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="mike-img"><img src="~/assets/images/profilepic/mike.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                                <li class="list-group-item pt-0 my-2 col-3">
+                                    <input id="river-img" class="d-none" type="radio" value="bugs.jpg" @(user.Image=="bugs.jpg"?"checked":"") name="Image">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="river-img"><img src="~/assets/images/profilepic/bugs.jpg" style="max-width:150px; height:150px" /></label>
+                                </li>
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+

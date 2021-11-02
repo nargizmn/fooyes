@@ -1,0 +1,103 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Order Details";
+    Restaurant restaurant = ViewBag.Restaurant;
+    List<Rider> riders = ViewBag.Riders;
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <h1 style="padding:.5em;">Order Details</h1>
+        <div class="card-body">
+            <h6 class="card-title"><strong style="padding-right:1em;">Restaruant:</strong>@restaurant.Name</h6>
+            <h6 class="card-title"><strong style="padding-right:1em;">User:</strong>@(Model.AppUser.Name+" "+Model.AppUser.LastName) - @Model.AppUser.Email</h6>
+            <h6 class="card-title"><strong style="padding-right:1em;">Address:</strong>@Model.City / @Model.Address</h6>
+            <h6 class="card-title"><strong style="padding-right:1em;">Phone number:</strong>@Model.Phone</h6>
+            <h6 class="card-title"><strong style="padding-right:1em;">Postal Code: </strong>@Model.PostalCode</h6>
+            <h6 class="card-title"><strong style="padding-right:1em;">Delivery Type:</strong>@Model.DeliveryType</h6>
+            @if (Model.DeliveryDate != null && Model.DeliveryTime != null)
+            {
+                <h6 class="card-title"><strong style="padding-right:1em;">Delivery Date: </strong>@Model.DeliveryDate</h6>
+                <h6 class="card-title"><strong style="padding-right:1em;">Delivery Time: </strong>@Model.DeliveryTime</h6>
+            }
+            else
+            {
+                <h6 class="card-title"><strong style="padding-right:1em;">Delivery Time: </strong>Now</h6>
+            }
+            @if (Model.AdminNote != null)
+            {
+                <h6 class="card-title"><strong style="padding-right:1em;">Admin note: </strong>@Model.AdminNote</h6>
+            }
+            @if (Model.Status == true && Model.DeliveryType.ToLower() == "delivery")
+            {
+                <h6 class="card-title"><strong style="padding-right:1em;">Rider: </strong>@Model.Rider.Fullname</h6>
+            }
+            @if (Model.Status == null && Model.DeliveryType.ToLower() == "delivery")
+            {
+                <form>
+                    <div class="form-group col-6 p-0">
+                        <label for="exampleFormControlSelect1"><strong style="padding-right:1em;">Choose a rider for order</strong></label>
+                        <select class="select-form form-control" style="overflow:scroll;">
+                            @foreach (var rider in riders)
+                            {
+                                <option value="@rider.Id">@rider.Fullname</option>
+                            }
+                        </select>
+                        <span class="text-danger rider-validation"></span>
+                    </div>
+                </form>
+            }
+            <h6 class="card-title">
+                <strong style="padding-right:1em;">Status:</strong>
+                @if (Model.Status == null)
+                {
+                    <span class="badge badge-warning">Pending</span>
+                }
+                else if (Model.Status == true)
+                {
+                    <span class="badge badge-success">Accepted</span>
+                }
+                else
+                {
+                    <span class="badge badge-danger">Rejected</span>
+                }
+            </h6>
+
+
+            <h5 class="card-title"><strong style="padding-right:1em;">Products: </strong></h5>
+            <ul>
+                @foreach (var item in Model.OrderItems)
+                {
+
+                    <li class="pb-3">
+                        <h6 class="card-title mb-0">@item.Meal.Name X @item.Count - Total: @(Math.Round(item.Count*(restaurant.CampaignId!=null && restaurant.Campaign.ExpireDate>=DateTime.Now?(double)item.Meal.DiscountedPrice:item.Meal.Price),1))$ </h6>
+                        @if (item.SizeId != null)
+                        {
+                            <small class="card-title">@item.Meal.MealSizes.Select(x => x.Size).FirstOrDefault(x => x.Id == item.Size.Id).Name   + $@(item.Count*item.Meal.MealSizes.Select(x => x.Size).FirstOrDefault(x => x.Id == item.Size.Id).ExtraCharge)</small>
+                        }
+                    </li>
+                }
+            </ul>
+            @if (Model.DeliveryType.ToLower() == "delivery")
+            {
+                <h6>Delivery Fee : @Model.OrderItems.FirstOrDefault().Meal.Restaurant.DeliveryFee$</h6>
+            }
+            <h5>Total Price : @Model.TotalPrice$</h5>
+
+            @if (Model.Status == null)
+            {
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="note">Note</label>
+                            <textarea name="note" class="form-control admin-note"></textarea>
+                            <span class="text-danger admin-note-validation"></span>
+                        </div>
+                    </div>
+                </form>
+                <a asp-action="orderaccept" asp-route-orderId="@Model.Id" class="btn btn-success order-accept-button"> Accept</a>
+                <a asp-action="orderreject" asp-route-orderId="@Model.Id" class="btn btn-danger order-reject-button">Reject</a>
+            }
+        </div>
+    </div>
+</div>

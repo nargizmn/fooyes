@@ -1,0 +1,257 @@
+.work-with-us{
+    a{
+        @include button-primary;
+        width: max-content;
+        padding: .6em 1.7em;
+    }
+}
+
+.why-work-with-us{
+    .main-title{
+        text-align: center;
+    }
+    .detail-box{
+        padding: 2em;
+        h2{
+            color: #e54750;
+            font-size: 1.2rem;
+        } 
+        span{
+            font-weight: 400;
+            &:hover{
+                text-decoration: none;
+            }
+        }
+    }
+    
+}
+
+.work-with-us-faq{
+    background-color: #f9fafb;
+    .main-title{
+        text-align: center;
+        h2{
+            font-size: 1.8rem;
+        }
+        p{
+            font-weight: 300;
+        }
+    }
+    .faq{
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .1);
+        background-color: #fff;
+    }
+    .faq-header{
+        padding: 1em;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .05);
+        h3{
+            color: #999;
+            font-size: 1rem;
+        }
+        i{
+            color: #e54750;
+        }
+        .minus{
+            display: none;
+        }
+    }
+    .faq-body{
+        padding: 1.2em;
+        transition: none;
+        display: none;
+        p{
+            font-size: .875rem;
+            color: #444;
+            font-weight: 400;
+        }
+    }
+    .first-minus{
+        display: inline-block;
+    }
+    .plus{
+        display: none;
+    }
+    .first{
+        display: block;
+    }
+}
+.apply-job{
+    .main-title{
+        text-align: center;
+    }
+    .job-apply-form{
+        padding: 3em 2em 0;
+        background-color: #f5f6f7;
+        form{
+            &>div{
+                border-bottom: 1px solid #d2d8dd; 
+                padding-bottom: 3em;
+                &:last-child{
+                    border-bottom: none;
+                }
+            }
+        }
+        label{
+            color: #222;
+            font-size: 1.2rem;
+            font-weight: bolder;
+            line-height: 1.6;
+        }
+        .select-location{
+                position: relative;
+                font-size: .9rem;
+                background-color: #fff;
+            .select-loc-input{
+                border: 1px solid #d2d8dd;
+                border-radius: 3px;
+                width: 100%;
+                padding: 1em;
+                cursor: pointer;
+                &:focus,
+                &:active{
+                    border-color: #e54750;
+                }
+                .current{
+                    color: #6d757d;
+                    font-weight: 400;
+                }
+                .rotated{
+                    transform: rotate(180deg);
+                }
+                .category-icon{
+                    i{
+                        color: #6d757d;
+                    }
+                }
+            }
+            ul{
+                display: none;
+                border: 1px solid #d2d8dd;
+                border-radius: 5px;
+                box-shadow: 0 0 0 1px rgba(68, 68, 68, .1);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                margin-top: 4px;
+                width: 100%;
+                z-index: 9999;
+                background-color: #fff;
+                li{
+                    cursor: pointer;
+                    font-weight: 400;
+                    line-height: 38px;
+                    padding: .3em 1em !important;
+                    color: #6d757d;
+                    &:hover{
+                        background-color: #f6f6f6 !important;
+                    }
+                }
+                .selected{
+                    background-color: #f6f6f6 !important;
+                    color: #444;
+                }
+            }
+        }
+        .custom-radio-box,
+        .custom-select-list{
+            label{
+                font-size: .9rem;
+                font-weight: 400;
+                color: #444;
+                a{
+                    color: #e54750;
+                    &:hover,
+                    &:focus{
+                        color: #111;
+                    }
+                }
+            }
+            li{
+                padding-left: 0;
+            }
+        }
+        .note{
+            font-size: .9rem; 
+            i,
+            span,
+            p{
+                color: #444;
+            }
+            span{
+                font-weight: bold;
+            }
+            p{
+                font-weight: 400;
+            }
+        }
+        .about-rider{
+            input{
+                @include text-input;
+                padding: .8em 1em;
+
+            }
+            h2{
+                color: #222;
+                font-size: 1.2rem;
+            }
+        }
+        button{
+            @include button-secondary;
+            font-weight: 600;
+            padding: .7em 2.5em;
+        }
+    }
+}
+
+.modal{
+    display: none;
+    width: inherit;
+    height: max-content;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: none;
+    .modal-header{
+        padding: 1em;
+        h4{
+            color: #222;
+            font-size: 1.5rem;
+        }
+        .modal-close-btn{
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000;
+            text-shadow: 0, 1px, 0, 0 #fff;
+            opacity: .5;
+            border: 0;
+            background-color: transparent;
+            &:hover,
+            &:focus{
+                opacity: .75;
+            }
+        }
+    }
+    .modal-body{
+        p{
+            font-weight: 400;
+            font-size: .9rem;
+            color: #444;
+        }
+    }
+    .modal-footer{
+        .modal-close-btn{
+            @include button-secondary;
+            padding: .7em 1.8em;
+        }
+    }
+}
+#terms-modal-overlay,
+#food-modal-overlay{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}

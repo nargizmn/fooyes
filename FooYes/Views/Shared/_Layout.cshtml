@@ -1,0 +1,174 @@
+﻿@inject FooYes.Services.LayoutService  layoutService
+@inject Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager
+
+
+@{
+    Setting setting = layoutService.GetSetting();
+    AppUser appUser = null;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        appUser = userManager.Users.FirstOrDefault(x => x.UserName == User.Identity.Name && x.IsAdmin == false);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="~/node_modules/owl.carousel/dist/assets/owl.theme.default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    @RenderSection("style", required: false)
+    <title>FooYes - Delivery or Takeaway Food</title>
+</head>
+<body>
+    @if (TempData["Succeed"] != null)
+    {
+        <input type="hidden" id="toast-message" data-text="@TempData["Succeed"]" data-succeded="true" />
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <input type="hidden" id="toast-message" data-text="@TempData["Error"]" data-succeded="false" />
+    }
+    <!-- HEADER -->
+    <header class="@ViewBag.HeaderClass">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="#" class="burger-menu">
+                <i class="fas fa-bars"></i>
+            </a>
+            <nav class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <a asp-controller="home" asp-action="index">
+                        <img src="~/uploads/settings/@setting.HeaderLogo" alt="FooYes header logo">
+                    </a>
+                    <i class="close-mobile-menu fas fa-times"></i>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item"><a asp-controller="home" asp-action="index">Home</a></li>
+                    <li class="list-group-item"><a asp-controller="restaurant" asp-action="index">Restaurants</a></li>
+                    <li class="list-group-item"><a asp-controller="home" asp-action="workwithus">Work with us</a></li>
+                    <li class="list-group-item"><a asp-controller="home" asp-action="contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="logo">
+                <a asp-controller="home" asp-action="index">
+                    <img src="~/uploads/settings/@setting.HeaderLogo" class="default-logo" alt="FooYes header logo">
+                    <img src="~/uploads/settings/@setting.HeaderColorfulLogo" class="colored-logo" alt="FooYes header colorful logo">
+                </a>
+            </div>
+            <nav style="z-index: 2000;">
+                <ul class="list-group flex-row align-items-center">
+                    <li class="nav-link list-group-item"><a asp-controller="home" asp-action="index">Home</a></li>
+                    <li class="nav-link list-group-item"><a asp-controller="restaurant" asp-action="index">Restaurants</a></li>
+                    <li class="nav-link list-group-item"><a asp-controller="home" asp-action="workwithus">Work with us</a></li>
+                    <li class="nav-link list-group-item"><a asp-controller="home" asp-action="contact">Contact</a></li>
+                    @if (appUser != null)
+                    {
+                        <li class="list-group-item d-flex align-items-center dropdown" style="padding-left: 2em; cursor: pointer;position:relative;">
+                            @if (appUser.Image == null)
+                            {
+                                <img style="width:50px;height:50px;border-radius:50%;margin-right:10px" src="~/assets/images/avatar.jpg" alt="">
+
+                            }
+                            else
+                            {
+                                <div class="d-inline-block" style="max-width:60px;max-height:50px;border-radius:50%;margin-right:10px;overflow: hidden;">
+                                    <img style="width:100%; @(appUser.Image=="aqilm.jpg"?"transform: scale(1.2)":"")" src="~/assets/images/profilepic/@appUser.Image" alt="">
+                                </div>
+                            }
+                            <a role="button">@appUser.UserName.ToUpper()</a>
+                                <ul class="dropdown-menu" style="padding: 1em;background: white;position: absolute;top: 4.8rem;width: 100%;box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .2);">
+                                    <li style="display:block;padding:.5em;"><a class="dropdown-item" style="color: #2c2b5e;" asp-controller="account" asp-action="edit">Edit Profile</a></li>
+                                    <li style="display:block;padding:.5em;"><a class="dropdown-item" style="color: #2c2b5e;" asp-controller="home" asp-action="seewishlist">See Wishlist</a></li>
+                                    <li style="display:block;padding:.5em;"><a class="dropdown-item" style="color: #2c2b5e;" asp-controller="order" asp-action="seeorders">See Orders</a></li>
+                                    <li style="display:block;padding:.5em;"><a class="dropdown-item" style="color: #2c2b5e;" asp-controller="account" asp-action="logout">Logout</a></li>
+                                </ul>
+                        </li>
+                    }
+                    else 
+                    {
+                        <li class="list-group-item pb-0">
+                            <a asp-controller="account" asp-action="login">
+                                <img src="~/assets/images/login.svg" class="default-icon" alt="sign in icon">
+                                <img src="~/assets/images/login_black.svg" class="colored-icon" alt="sign in icon">
+                            </a>
+                        </li>
+                        <li class="list-group-item pb-0">
+                            <a asp-controller="home" asp-action="seewishlist">
+                                <img src="~/assets/images/passion.svg" class="default-icon" alt="favourites icon">
+                                <img src="~/assets/images/passion_black.svg" class="colored-icon" alt="favourites icon">
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+               
+            </nav>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="waves" style="background-image: url(../../assets/images/wave_white.svg);"></div>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="footer-header">Quick Links</h3>
+                    <ul class="footer-list list-group">
+                        <li class="list-group-item"><a asp-controller="home" asp-action="index">Home</a></li>
+                        <li class="list-group-item"><a asp-controller="restaurant" asp-action="index">Restaurants</a></li>
+                        <li class="list-group-item"><a asp-controller="home" asp-action="workwithus">Work with us</a></li>
+                        <li class="list-group-item"><a asp-controller="home" asp-action="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="footer-header">Categories</h3>
+                    <ul class="footer-list list-group">
+                        <li class="list-group-item"><a asp-controller="restaurant" asp-action="index" asp-route-sort="all">All offers</a></li>
+                        <li class="list-group-item"><a asp-controller="restaurant" asp-action="index" asp-route-sort="toprated">Top Rated</a></li>
+                        <li class="list-group-item"><a asp-controller="restaurant" asp-action="index" asp-route-sort="recommended">Recommended</a></li>
+                        <li class="list-group-item"><a asp-controller="restaurant" asp-action="index" asp-route-sort="15off">Up to 15%</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="footer-header">Contacts</h3>
+                    <ul class="footer-list list-group">
+                        <li class="icon house list-group-item">@Html.Raw(setting.Address)</li>
+                        <li class="icon phone list-group-item">@setting.Phone</li>
+                        <li class="icon mail list-group-item">@setting.Email</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="footer-header">Keep in touch</h3>
+                    <form method="post" asp-controller="home" asp-action="subscribe" class="footer-list">
+                        <input type="email" name="mailaddress" class="form-control" placeholder="Your Email" autocomplete="off">
+                        <button type="submit">
+                            <i class='fas fa-angle-right'></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="~/node_modules/jquery/dist/jquery.js"></script>
+    <script src="~/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+    <script src="~/node_modules/rangeslider.js/dist/rangeslider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/assets/js/main.js"></script>
+    <script src="~/assets/js/new.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

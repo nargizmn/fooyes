@@ -1,0 +1,243 @@
+﻿@model HomeViewModel
+@{
+    ViewBag.HeaderClass = "transparent-header";
+}
+
+
+    <!-- TERMS AND CONDITIONS MODAL -->
+    <div class="modal-wrapper col-lg-4 col-md-6 col-sm-10">
+        <div id="modal" class="modal terms-modal" style="z-index: 10001;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Terms and Conditions</h4>
+                        <button type="button" class="modal-close-btn">x</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-2">@Model.Setting.JobTerms</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-close-btn">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="terms-modal-overlay" style="background-color: rgba(0, 0, 0, 0.4); z-index: 4000;"></div>
+    </div>
+
+
+    <!-- HERO SECTION -->
+    <main class="contact work-with-us">
+        <div class="hero-section d-flex flex-column justify-content-center" style="background-image: url(../../uploads/settings/@Model.Setting.WorkWithUsHeroSecBgImg);">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <h1>@Model.Setting.WorkWithUsHeroSecTitle</h1>
+                    <p>@Model.Setting.WorkWithUsHeroSecSubtitle</p>
+                    <a href="#apply-job" class="mt-4">Apply now</a>
+                </div>
+            </div>
+            <div class="waves" style="background-image: url(../../assets/images/wave_white.svg);"></div>
+        </div>
+    </main>
+
+    <!-- WHY WORK WITH US SECTION -->
+    <section class="why-work-with-us contact-details">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="mb-4 main-title d-flex flex-column align-items-center">
+                    <span class="main-line"><span></span></span>
+                    <h2>Why Work with Us</h2>
+                    <p>We offer you the best work conditions!</p>
+                </div>
+                @foreach (var item in Model.JobFeatures)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="detail-box">
+                            <img src="~/uploads/jobfeatures/@item.Image" alt="">
+                            <h2 class="my-1">@item.Title</h2>
+                            <span>@item.Desc</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="work-with-us-faq pb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="mb-4 main-title d-flex flex-column align-items-center">
+                        <h2>Frequent questions</h2>
+                        <p>Here you'll be able find answers your questions</p>
+                    </div>
+                    <div class="faq-section">
+                        @foreach (var item in Model.Faqs)
+                        {
+                            <div class="faq mb-2">
+                                <a href="#" class="faq-header d-flex justify-content-between align-items-center">
+                                    <h3>@item.Question</h3>
+                                    <i class="@(Model.Faqs.First().Id==item.Id? "plus" : "") fas fa-plus"></i>
+                                    <i class="@(Model.Faqs.First().Id==item.Id? "first-minus" : "minus") fas fa-minus"></i>
+                                </a>
+                                <div class="@(Model.Faqs.First().Id==item.Id? "first" : "")  faq-body">
+                                    <p>@item.Answer</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APPLY SECTION -->
+    <section class="apply-job my-5 py-5" id="apply-job">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="mb-4 main-title d-flex flex-column align-items-center">
+                        <span class="main-line"><span></span></span>
+                        <h2>Apply Now</h2>
+                        <p>Note that you must be over 18 years old</p>
+                    </div>
+                    <div class="job-apply-form">
+                        <form method="post" asp-action="jobapply">
+                            <div class="form-group mb-5">
+                                <label class="d-block mb-3">Where would you like to work?</label>
+                                <select name="City" style="display: none;">
+                                    <option>Your City</option>
+                                    <option value="London">London</option>
+                                    <option value="Paris">Paris</option>
+                                    <option value="Madrid">Madrid</option>
+                                    <option value="Berlin">Berlin</option>
+                                    <option value="Rome">Rome</option>
+                                </select>
+                                <div class="select-location">
+                                    <div class="select-loc-input d-flex justify-content-between">
+                                        <span class="current d-inline-block">Your City</span>
+                                        <span class="category-icon d-inline-block"><i class="fas fa-chevron-up"></i></span>
+                                    </div>
+                                    <ul class="select-loc-list list-group">
+                                        <li data-value="London" class="list-group-item option">London</li>
+                                        <li data-value="Paris" class="list-group-item option">Paris</li>
+                                        <li data-value="Madrid" class="list-group-item option">Madrid</li>
+                                        <li data-value="Berlin" class="list-group-item option">Berlin</li>
+                                        <li data-value="Rome" class="list-group-item option">Rome</li>
+                                    </ul>
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-5">
+                                <label class="d-block mb-3">What is your vehicle type?</label>
+                                <ul class="custom-radio-box list-group pb-3">
+                                    <li class="list-group-item pt-0">
+                                        <input id="bicycle" class="d-none" type="radio" value="Bicycle" name="vehicletype">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="bicycle" name="vehicle-type">Bicycle</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input id="scooter" class="d-none" value="Scooter" type="radio" name="vehicletype">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="scooter" name="vehicle-type">Scooter</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input id="car" class="d-none" type="radio" value="Car" name="vehicletype">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="car" name="vehicletype">Car</label>
+                                    </li>
+                                </ul>
+                                <div class="note">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Note</span>
+                                    <p>
+                                        A commercial driver's license may be required, depending on the vehicle type.
+                                    </p>
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-5">
+                                <label class="d-block mb-3">How did you hear about us?</label>
+                                <ul class="custom-select-list list-group pb-3">
+                                    <li class="list-group-item pt-0">
+                                        <input value="Google Search Engine" name="jobsource" class="d-none" type="checkbox" id="apply-gse">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="apply-gse">Google Search Engine</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input value="A friend of mine" name="jobsource" class="d-none" type="checkbox" id="apply-friend">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="apply-friend">A friend of mine</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input value="Print advertise" name="jobsource" class="d-none" type="checkbox" id="apply-print">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="apply-print">Print advertise</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input value="Newspaper" name="jobsource" class="d-none" type="checkbox" id="apply-news">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="apply-news">Newspaper</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input value="Other" name="jobsource" class="d-none" type="checkbox" id="apply-other">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="apply-other">Other</label>
+                                    </li>
+                                </ul>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="about-rider mb-5">
+                                <h2 class="mb-3">Tell us about yourself</h2>
+                                <div class="form-group mb-3">
+                                    <input name="fullname" type="text" class="form-control" placeholder="First and Last Name" autocomplete="off">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input name="email" type="email" class="form-control" placeholder="Your Email" autocomplete="off">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input name="telephone" type="text" class="form-control" placeholder="Your Telephone" autocomplete="off">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="age-input form-group mb-3 col-3">
+                                        <input name="age" type="number" class="form-control" placeholder="Age" autocomplete="off">
+                                        <span class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3 col-9">
+                                        <ul class="custom-radio-box list-group pb-3 flex-row">
+                                            <li class="list-group-item">
+                                                <input id="male" value="Male" class="d-none" type="radio" name="gender">
+                                                <span class="checked d-inline-block"></span>
+                                                <label for="male" name="gender">Male</label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <input id="female" value="Female" class="d-none" type="radio" name="gender">
+                                                <span class="checked d-inline-block"></span>
+                                                <label for="female" name="gender">Female</label>
+                                            </li>
+                                        </ul>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                    <div class="custom-select-list form-group">
+                                        <input name="TermsAccept" value="true" class="d-none" type="checkbox" id="termsaccept">
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="termsaccept">Please accept our <a href="#" class="modal-btn">Terms and conditions</a></label>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+

@@ -1,0 +1,36 @@
+﻿@model ContactCard
+@{ 
+    ViewData["Title"] = "Create New Contact Card";
+}
+
+
+<div class="container">
+    <h1>Create</h1>
+
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="Title">Title</label>
+            <input type="text" asp-for="Title" class="form-control" placeholder="Title">
+            <span class="text-danger" asp-validation-for="Title"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Subtitle">Subtitle</label>
+            <textarea type="text" asp-for="Subtitle" class="form-control" placeholder="Subtitle"></textarea>
+            <span class="text-danger" asp-validation-for="Subtitle"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="WorkingHours">Working Hours</label>
+            <input type="text" asp-for="WorkingHours" class="form-control" placeholder="Working Hours">
+            <span class="text-danger" asp-validation-for="WorkingHours"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Icon">Icon</label>
+            <input type="text" asp-for="Icon" class="form-control" placeholder="Icon">
+            <span class="text-danger" asp-validation-for="Icon"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+

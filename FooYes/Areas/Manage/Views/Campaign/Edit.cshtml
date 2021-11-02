@@ -1,0 +1,26 @@
+﻿@model Campaign
+@{
+    ViewData["Title"] = "Edit campaign";
+}
+
+
+<div class="container">
+    <h1>Edit</h1>
+
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="DiscountPercent">Discount Percent</label>
+            <input type="text" asp-for="DiscountPercent" class="form-control" placeholder="Discount Percent">
+            <span class="text-danger" asp-validation-for="DiscountPercent"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ExpireDate">Expire Date</label>
+            <input type="date" asp-for="ExpireDate" class="form-control" placeholder="Expire Date">
+            <span class="text-danger" asp-validation-for="ExpireDate"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+

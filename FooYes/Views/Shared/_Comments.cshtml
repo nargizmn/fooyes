@@ -1,0 +1,94 @@
+﻿@model List<Comment>
+
+@{ 
+    AppUser user = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        user = userManager.FindByNameAsync(User.Identity.Name).Result;
+    }
+}
+
+@foreach (var item in Model)
+{
+    <div class="review py-4 mb-4">
+        <div class="row">
+            <div class="user-info mb-2 col-2 d-flex flex-column align-items-center">
+                <div class="img-container mb-3">
+                    @if (item.AppUser.Image == null)
+                    {
+                        <img src="~/assets/images/avatar.jpg" alt="">
+                    }
+                    else
+                    {
+                        <img src="~/assets/images/profilepic/@item.AppUser.Image" alt="">
+                    }
+                </div>
+                <h5>@item.AppUser.UserName</h5>
+            </div>
+            <div class="col-10">
+                <div class="rating-avg d-flex justify-content-between">
+                    <div>
+                        <span>@item.Rate</span>
+                        <small>/10</small>
+                        <small>Rating average</small>
+                    </div>
+                    <div>
+                        <em>Published @item.CreatedAt.ToString("HH:mm dd MMM, yyyy")</em>
+                    </div>
+                </div>
+                <div class="review-text">
+                    <h3 class="my-2">"@item.Title"</h3>
+                    <p>@item.Text</p>
+                </div>
+                <div class="buttons mt-5">
+                    <a asp-action="useful" asp-route-id="@item.Id" class="useful @(user!=null?item.CommentRates.Any(x=>x.IsUseful && x.AppUserId == user.Id)?"clicked":"":"") d-inline-block">
+                        <span class="useful-count">@item.CommentRates.Where(x => x.IsUseful).Count()</span>
+                        <i class="far fa-thumbs-up"></i>
+                        <span>Useful</span>
+                        <input class="d-none" type="radio" value="useful" name="rate">
+                    </a>
+                    <a asp-action="notuseful" asp-route-id="@item.Id" class="notuseful @(user!=null?item.CommentRates.Any(x=>!x.IsUseful && x.AppUserId == user.Id)?"clicked":"":"") d-inline-block">
+                        <span class="notuseful-count">@item.CommentRates.Where(x => !x.IsUseful).Count()</span>
+                        <i class="far fa-thumbs-down"></i>
+                        <span> Not useful</span>
+                        <input class="d-none" type="radio" value="notuseful" name="rate">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $('.useful').on('click', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        fetch(url).then(response => response.json()).then(data => {
+            $(this).children('.useful-count').html(data[0]);
+            $(this).next().children('.notuseful-count').html(data[1]);
+        });
+        if ($(this).hasClass('clicked')) {
+            $(this).removeClass('clicked');
+        }
+        else {
+            $(this).addClass('clicked');
+        }
+        $(this).next().removeClass('clicked');
+    });
+
+    $('.notuseful').on('click', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        fetch(url).then(response => response.json()).then(data => {
+            $(this).children('.notuseful-count').html(data[1]);
+            $(this).prev().children('.useful-count').html(data[0]);
+        });
+        if ($(this).hasClass('clicked')) {
+            $(this).removeClass('clicked');
+        }
+        else {
+            $(this).addClass('clicked');
+        }
+        $(this).prev().removeClass('clicked');
+    });
+</script>

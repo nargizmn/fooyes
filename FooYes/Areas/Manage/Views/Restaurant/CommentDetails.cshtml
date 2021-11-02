@@ -1,0 +1,49 @@
+﻿@model Comment
+@{
+    ViewData["Title"] = "Comment Details";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="mb-3">@Model.AppUser.UserName's review for @Model.Restaurant.Name</h1>
+            <h6 class="card-title">Title: @Model.Title</h6>
+            <h6 class="card-title">Text: @Model.Text </h6>
+            <h6 class="card-title">Rate: @Model.Rate </h6>
+            <h6 class="card-title">Created At: @Model.CreatedAt.ToString("HH:mm dd MMM, yyyy")</h6>
+            @if (Model.Status != null)
+            {
+                <h6 class="card-title">Admin note: @Model.AdminNote</h6>
+            }
+            <h6 class="card-title">
+                Status:
+                @if (Model.Status == null)
+                {
+                    <span class="badge badge-warning">Pending</span>
+                }
+                else if (Model.Status == true)
+                {
+                    <span class="badge badge-success">Accepted</span>
+                }
+                else
+                {
+                    <span class="badge badge-danger">Rejected</span>
+                }
+            </h6>
+            @if (Model.Status == null)
+            {
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="note">Note</label>
+                            <textarea name="note" class="form-control admin-note"></textarea>
+                            <span class="text-danger admin-note-validation"></span>
+                        </div>
+                    </div>
+                </form>
+                <a asp-action="acceptcomment" asp-route-commentId="@Model.Id" class="btn btn-success comment-accept-button"> Accept</a>
+                <a asp-action="rejectcomment" asp-route-commentId="@Model.Id" class="btn btn-danger comment-reject-button">Reject</a>
+            }
+        </div>
+    </div>
+</div>

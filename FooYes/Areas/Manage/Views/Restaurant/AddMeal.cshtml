@@ -1,0 +1,64 @@
+﻿@model Meal
+@{
+    ViewData["Title"] = "Add new meal";
+}
+
+
+<div class="container">
+    <h1>Add new meal for @ViewBag.Restaurant.Name</h1>
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group d-none">
+            <input type="text" asp-for="RestaurantId" class="form-control" value="@ViewBag.Restaurant.Id">
+        </div>
+        <div class="form-group">
+            <label asp-for="Name">Name</label>
+            <input type="text" asp-for="Name" class="form-control" placeholder="Name">
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Ingridients">Ingridients</label>
+            <input type="text" asp-for="Ingridients" class="form-control" placeholder="Ingridients">
+            <span class="text-danger" asp-validation-for="Ingridients"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price">Price</label>
+            <input type="number" asp-for="Price" class="form-control" placeholder="Price">
+            <span class="text-danger" asp-validation-for="Price"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageFile">Upload meal's image</label>
+            <input type="file" asp-for="ImageFile" />
+            <span class="text-danger" asp-validation-for="ImageFile"></span>
+        </div>
+        <div class="select-meal form-group">
+            <div class="d-flex justify-content-between align-items-center">
+                <label for="exampleFormControlSelect1">Choose meal's type from the list</label>
+                <a class="add-meal-type btn btn-info mb-3">Or add new</a>
+            </div>
+            <select class="form-control" style="overflow:scroll;" asp-for="MealTypeId" asp-items="@(new SelectList(ViewBag.MealTypes,"Id","Name"))">
+            </select>
+            <span class="text-danger" asp-validation-for="MealTypeId"></span>
+        </div>
+        <div class="form-group meal-type-form" style="display:none;">
+            <div class="d-flex justify-content-between align-items-center">
+                <label asp-for="MealTypeName">Add new meal type</label>
+                <a class="choose-meal-type btn btn-info mb-3">Or choose from the current list</a>
+            </div>
+            <input type="text" asp-for="MealTypeName" class="form-control" placeholder="New meal type">
+            <span class="text-danger" asp-validation-for="MealTypeName"></span>
+        </div>
+        <div class="form-group">
+            <div class="d-flex justify-content-between align-items-center">
+                <label for="exampleFormControlSelect1">If your meal has different serving sizes</label>
+                <a class="add-meal-size btn btn-info mb-3">+ Add meal size</a>
+            </div>
+            <div class="size-wrapper">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+
+

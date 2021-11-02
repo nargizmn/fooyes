@@ -1,0 +1,279 @@
+﻿@model List<Restaurant>
+@{
+    ViewBag.HeaderClass = "white-header";
+
+    int prevPage = ViewBag.SelectedPage - 1;
+    int nextPage = ViewBag.SelectedPage + 1;
+
+    List<Category> categories = ViewBag.Categories;
+    List<int> categoryIds = new List<int>();
+    List<int> selectedCatIds = ViewBag.CategoryIds;
+
+}
+
+
+
+    <!-- SEARCH LINE -->
+    <main class="restaurants-main mb-5">
+        <div class="container">
+            <div class="row justify-content-end">
+                <div class="search-line col-xl-4 col-lg-6 col-md-6 col-sm-6 p-0">
+                    <form asp-action="index">
+                        <input type="text" name="search" class="form-control" placeholder="Dishes, restaurants or cuisines" autocomplete="off">
+                        <button type="submit"><i class="fas fa-search fa-flip-horizontal"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FILTER SECTION -->
+    <section class="filter mb-5">
+        <div class="container">
+            <div class="row">
+                    <div class="sidebar col-3">
+                        <form asp-action="index">
+                            <div class="delivery-type">
+                                <ul class="custom-radio-box list-group pb-3">
+                                    <li class="list-group-item pt-0">
+                                        <input id="delivery" class="d-none delivery-type" type="radio" value="delivery" name="deliverytype" @(ViewBag.DeliveryType=="delivery"?"checked":"")>
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="delivery" name="deliverytype">Delivery</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input id="take-away" class="d-none delivery-type" type="radio" value="takeaway" name="deliverytype" @(ViewBag.DeliveryType=="takeaway"?"checked":"")>
+                                        <span class="checked d-inline-block"></span>
+                                        <label for="take-away" name="deliverytype">Take Away</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="adjust-icon">
+                                <i class="fas fa-sliders-h"></i>
+                            </div>
+                            <div class="filter-section">
+                                <div class="mobile-filter-header">
+                                    <span class="d-inline-block">Filters</span>
+                                    <i class="close-mobile-menu fas fa-times"></i>
+                                </div>
+                                <div class="sort">
+                                    <div class="sort-header d-flex justify-content-between">
+                                        <h4 class="d-inline-block" href="#">Sort</h4>
+                                        <span class="sort-icon d-inline-block"><i class="fas fa-chevron-up"></i></span>
+                                    </div>
+                                    <div class="sort-list pb-3">
+                                        <ul class="custom-radio-box list-group">
+                                            <li class="list-group-item pt-0">
+                                                <input id="top-rated" class="d-none" type="radio" name="sort" value="toprated" @(ViewBag.Sort=="toprated"?"checked":"")>
+                                                <span class="checked d-inline-block"></span>
+                                                <label for="top-rated" name="sort">Top rated</label>
+                                            </li> 
+                                            <li class="list-group-item">
+                                                <input id="recommended" class="d-none" type="radio" name="sort" value="recommended" @(ViewBag.Sort=="recommended"?"checked":"")>
+                                                <span class="checked d-inline-block"></span>
+                                                <label for="recommended" name="sort">Recommended</label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <input id="low-to-high" class="d-none" type="radio" name="sort" value="lowtohigh" @(ViewBag.Sort=="lowtohigh"?"checked":"")>
+                                                <span class="checked d-inline-block"></span>
+                                                <label for="low-to-high" name="sort">Price: low to high</label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <input id="up-to-15" class="d-none" type="radio" name="sort" value="15off" @(ViewBag.Sort=="15off"?"checked":"")>
+                                                <span class="checked d-inline-block"></span>
+                                                <label for="up-to-15" name="sort">Up to 15% off</label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <input id="all-offers" class="d-none" type="radio" name="sort" value="all" @(ViewBag.Sort=="all"?"checked":"")>
+                                                <span class="checked d-inline-block"></span>
+                                                <label for="all-offers" name="sort">All offers</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="category-filter">
+                                    <div class="category-header d-flex justify-content-between">
+                                        <h4 class="d-inline-block" href="#">Categories</h4>
+                                        <span class="category-icon d-inline-block rotated"><i class="fas fa-chevron-up"></i></span>
+                                    </div>
+                                    <div class="category-list pb-3">
+                                        <ul class="custom-select-list list-group">
+                                            @foreach (var item in categories)
+                                            {
+                                                <li class="list-group-item @(item==categories.First()?"pt-0":"") d-flex justify-content-between">
+                                                    <div>
+                                                        <input class="d-none" type="checkbox" id="rest-@item.Name" name="categoryIds" value="@item.Id" @(selectedCatIds.Any(x=>x == item.Id)?"checked":"")>
+                                                        <span class="d-inline-block checked"></span>
+                                                        <label for="rest-@item.Name">@item.Name</label>
+                                                    </div>
+                                                    <div>
+                                                        <small>@item.Restaurants.Where(x=>!x.IsDeleted).Count()</small>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="rating">
+                                    <div class="rating-header d-flex justify-content-between">
+                                        <h4 class="d-inline-block" href="#">Rating</h4>
+                                        <span class="rating-icon rotated d-inline-block"><i class="fas fa-chevron-up"></i></span>
+                                    </div>
+                                    <div class="rating-list pb-3">
+                                        <ul class="custom-radio-box list-group pb-3">
+                                            <li class="list-group-item pt-0 d-flex justify-content-between">
+                                                <div>
+                                                    <input class="d-none" type="radio" id="rate-super" name="rate" value="9" @(ViewBag.Rate==9?"checked":"")>
+                                                    <span class="d-inline-block checked"></span>
+                                                    <label for="rate-super">Super 9+</label>
+                                                </div>
+                                                <div>
+                                                    <small>@Model.Where(x => x.Rate >= 9).Count()</small>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div>
+                                                    <input class="d-none" type="radio" id="rate-very-good" name="rate" value="8" @(ViewBag.Rate==8?"checked":"")>
+                                                    <span class="d-inline-block checked"></span>
+                                                    <label for="rate-very-good">Very Good 8+</label>
+                                                </div>
+                                                <div>
+                                                    <small>@Model.Where(x => x.Rate >= 8).Count()</small>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div>
+                                                    <input class="d-none" type="radio" id="rate-good" name="rate" value="7" @(ViewBag.Rate==7?"checked":"")>
+                                                    <span class="d-inline-block checked"></span>
+                                                    <label for="rate-good">Good 7+</label>
+                                                </div>
+                                                <div>
+                                                    <small>@Model.Where(x => x.Rate >= 7).Count()</small>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div>
+                                                    <input class="d-none" type="radio" id="rate-pleasant" name="rate" value="6" @(ViewBag.Rate==6?"checked":"")>
+                                                    <span class="d-inline-block checked"></span>
+                                                    <label for="rate-pleasant">Pleasant 6+</label>
+                                                </div>
+                                                <div>
+                                                    <small>@Model.Where(x => x.Rate >= 6).Count()</small>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="filter-btn my-4">
+                                    <button style="background: none; border: none;" type="submit" class="w-100">Filter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-9">
+                        <div class="container">
+                            <div class="row">
+                                <div class="top-categories">
+                                    <h2>Top Categories</h2>
+                                    <div class="owl-carousel owl-theme owl-drag owl-loaded mt-4">
+                                        <div class="owl-stage-outer">
+                                            <div class="owl-stage">
+                                                @foreach (var item in ViewBag.Categories)
+                                                {
+                                                    <div class="owl-item">
+                                                        <a asp-action="index" asp-route-categoryId="@item.Id">
+                                                            <img style="object-fit: cover; object-position: 50% 50%;" src="~/uploads/categories/@item.Image" alt="">
+                                                            <div class="info pb-1">
+                                                                <h3>@item.Name</h3>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filtered-items mt-5">
+                                    <h2>Restaurants</h2>
+                                    <div class="row">
+                                        @foreach (var item in Model)
+                                        {
+                                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+                                                <div class="card p-0" style="max-height:170px">
+                                                    <a asp-action="detail" asp-route-id="@item.Id">
+                                                        <img src="~/uploads/restaurants/@item.RestaurantImages.FirstOrDefault(x=>x.IsMainImage)?.Image" alt="@item.Name restaurant image ">
+                                                        <small class="cat-name">@item.Category.Name</small>
+                                                        @if (item.CampaignId != null && item.Campaign.ExpireDate >= DateTime.Now)
+                                                        {
+                                                            <span class="discount d-inline-block">@item.Campaign.DiscountPercent% off</span>
+                                                        }
+                                                        <div class="rest-title">
+                                                            <h3>@item.Name</h3>
+                                                            <small>@item.Address</small>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="delivery-icons">
+                                                    <ul class="list-group flex-row justify-content-between align-items-center">
+                                                        <li class="list-group-item ps-0">
+                                                            <div class="text-center">
+                                                                <img src="~/assets/images/lunch-bag.png" alt="">
+                                                                <span class="d-inline-block me-2 @(item.HasTakeAway?"":"no")">Takeaway</span>
+                                                                <img src="~/assets/images/delivery.svg" alt="">
+                                                                <span class="d-inline-block @(item.HasDelivery?"":"no")">Delivery</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item pe-0">
+                                                            <span class="rate d-inline-block">@(item.Rate==null?"Not rated":item.Rate.ToString())</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item @(ViewBag.SelectedPage==1?"disabled":"")">
+                                        <a class="page-link" asp-action="index" asp-route-page="@(ViewBag.SelectedPage-1)" asp-route-search="@ViewBag.Search" asp-route-deliveryType="@ViewBag.DeliveryType" asp-route-rate="@ViewBag.Rate" asp-route-sort="@ViewBag.Sort" asp-route-categoryId="@ViewBag.CategoryId" asp-route-categoryIds="@ViewBag.CategoryIds" tabindex="-1">Previous</a>
+                                    </li>
+                                    @if (prevPage > 1)
+                                    {
+                                        <li>...</li>
+
+                                        for (int i = prevPage; i <= nextPage && i <= ViewBag.TotalPage; i++)
+                                        {
+                                            <li class="page-item @(ViewBag.SelectedPage == i ? "active" : "")"><a class="page-link" asp-action="index" asp-route-page="@i" asp-route-search="@ViewBag.Search" asp-route-deliveryType="@ViewBag.DeliveryType" asp-route-rate="@ViewBag.Rate" asp-route-sort="@ViewBag.Sort" asp-route-categoryId="@ViewBag.CategoryId" asp-route-categoryIds="@ViewBag.CategoryIds">@i</a></li>
+
+                                        }
+                                        if (nextPage < ViewBag.TotalPage)
+                                        {
+                                            <li>...</li>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (int i = 1; i <= 3 && i <= ViewBag.TotalPage; i++)
+                                        {
+                                            <li class="page-item @(ViewBag.SelectedPage == i ? "active" : "")"><a class="page-link " asp-action="index" asp-route-page="@i" asp-route-search="@ViewBag.Search" asp-route-deliveryType="@ViewBag.DeliveryType" asp-route-rate="@ViewBag.Rate" asp-route-sort="@ViewBag.Sort" asp-route-categoryId="@ViewBag.CategoryId" asp-route-categoryIds="@ViewBag.CategoryIds">@i</a></li>
+
+                                        }
+                                        if (ViewBag.TotalPage > 3)
+                                        {
+                                            <li>...</li>
+                                        }
+                                    }
+                                    <li class="page-item @(ViewBag.SelectedPage==ViewBag.TotalPage?"disabled":"")">
+                                        <a class="page-link" asp-action="index" asp-route-page="@(ViewBag.SelectedPage+1)" asp-route-search="@ViewBag.Search" asp-route-deliveryType="@ViewBag.DeliveryType" asp-route-rate="@ViewBag.Rate" asp-route-sort="@ViewBag.Sort" asp-route-categoryId="@ViewBag.CategoryId" asp-route-categoryIds="@ViewBag.CategoryIds">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>                
+            </div>
+        </div>
+    </section>
+

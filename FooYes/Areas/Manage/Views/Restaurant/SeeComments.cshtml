@@ -1,0 +1,87 @@
+﻿@model List<Comment>
+@{
+    ViewData["Title"] = "Comments";
+    int prevPage = ViewBag.SelectedPage - 1;
+    int nextPage = ViewBag.SelectedPage + 1;
+    int count = (ViewBag.SelectedPage - 1) * 3 + 1;
+    Restaurant restaurant = ViewBag.Restaurant;
+}
+
+<div class="container">
+    <h1>Comments for @restaurant.Name</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">CreatedAt</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@(count++)</th>
+                    <td>@item.AppUser.UserName</td>
+                    <td>@item.AppUser.Email</td>
+                    <td>@item.CreatedAt.ToString("HH:mm dd MMM yyyy")</td>
+                    <td>
+                        @if (item.Status == null)
+                        {
+                            <span class="badge badge-warning">Pending</span>
+                        }
+                        else if (item.Status == true)
+                        {
+                            <span class="badge badge-success">Accepted</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">Rejected</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="commentdetails" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.SelectedPage==1?"disabled":"")">
+                    <a class="page-link" asp-action="join" asp-route-page="@(ViewBag.SelectedPage-1)" asp-route-courseId="@ViewBag.CourseId" tabindex="-1">Previous</a>
+                </li>
+                @if (prevPage > 1)
+                {
+                    <li>...</li>
+                    for (int i = prevPage; i <= nextPage && i <= ViewBag.TotalPage; i++)
+                    {
+                        <li class="page-item @(ViewBag.SelectedPage == i ? "active" : "")"><a class="page-link" asp-action="join" asp-route-page="@i" asp-route-courseId="@ViewBag.CourseId">@i</a></li>
+                    }
+                    if (nextPage < ViewBag.TotalPage)
+                    {
+                        <li>...</li>
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= 3 && i <= ViewBag.TotalPage; i++)
+                    {
+                        <li class="page-item @(ViewBag.SelectedPage == i ? "active" : "")"><a class="page-link " asp-action="join" asp-route-page="@i" asp-route-courseId="@ViewBag.CourseId">@i</a></li>
+                    }
+                    if (ViewBag.TotalPage > 3)
+                    {
+                        <li>...</li>
+                    }
+                }
+                <li class="page-item @(ViewBag.SelectedPage==ViewBag.TotalPage?"disabled":"")">
+                    <a class="page-link" asp-action="join" asp-route-page="@(ViewBag.SelectedPage+1)" asp-route-courseId="@ViewBag.CourseId">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

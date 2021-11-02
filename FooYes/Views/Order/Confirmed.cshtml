@@ -1,0 +1,32 @@
+﻿@model Restaurant
+@{
+    ViewBag.HeaderClass = "white-header";
+}
+
+<!-- ORDER CONFIRMED SECTION -->
+<main class="order-confirm py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="order-confirm-box">
+                    <div class="order-confirm-box-header">
+                        <h3>@Model.Name</h3>
+                        <span>@Model.Address</span>
+                    </div>
+                    <div class="order-confirm-box-body">
+                        <div class="icon-order-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72">
+                                <g fill="none" stroke="#8EC343" stroke-width="2">
+                                    <circle cx="36" cy="36" r="35" style="stroke-dasharray:240px, 240px; stroke-dashoffset: 480px;"></circle>
+                                    <path d="M17.417,37.778l9.93,9.909l25.444-25.393" style="stroke-dasharray:50px, 50px; stroke-dashoffset: 0px;"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <h3 class="mb-1">Order Completed!</h3>
+                        <p class="px-3" style="text-align:center;">Please check your email to be informed about your order status!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

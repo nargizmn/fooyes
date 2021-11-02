@@ -1,0 +1,37 @@
+﻿@model Restaurant
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 style="color:#222;">@Model.Name's Menu</h1>
+            <a class="btn btn-info" asp-action="addmeal" asp-route-restaurantId="@Model.Id">Add new meal +</a>
+        </div>
+
+        <div>
+            @foreach (var mealType in Model.Meals.Where(x=>!x.IsDeleted).Select(x=>x.MealType).Distinct())
+            {
+                <div id="section" class="observe-item starters my-5">
+                    <h2 class="mb-3" style="color:#222;">@mealType.Name</h2>
+                    <div class="row">
+                        @foreach (var meal in mealType.Meals.Where(x=>!x.IsDeleted))
+                        {
+                            <div class="col-12 my-3 d-flex justify-content-between border-bottom">
+                                    <div class="food-info">
+                                        <h5>@meal.Name</h5>
+                                        <p class="mb-2">@meal.Ingridients</p>
+                                        <strong>$@meal.Price</strong>
+                                    </div>
+                                    <div class="food-pic" style="max-width:150px;">
+                                        <img style="width:100%;" src="~/uploads/meals/@meal.Image" alt="">
+                                        <a class="mt-2 w-100 btn btn-warning" asp-action="editmeal" asp-route-id="@meal.Id">Edit meal</a>
+                                        <a class="delete-item my-2 w-100 btn btn-danger" asp-action="deletemeal" asp-route-id="@meal.Id">Delete meal</a>
+                                    </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>

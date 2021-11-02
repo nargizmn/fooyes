@@ -1,0 +1,62 @@
+﻿@model Restaurant
+@{
+    ViewData["Title"] = "Create new restaurant";
+}
+
+
+<div class="container">
+    <h1>Create</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Name">Name</label>
+            <input type="text" asp-for="Name" class="form-control" placeholder="Name">
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address">Address</label>
+            <input type="text" asp-for="Address" class="form-control" placeholder="Address">
+            <span class="text-danger" asp-validation-for="Address"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryFee">Delivery Fee</label>
+            <input type="number" asp-for="DeliveryFee" class="form-control" placeholder="Delivery Fee">
+            <span class="text-danger" asp-validation-for="DeliveryFee"></span>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose restaurant's category</label>
+            <select class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories,"Id","Name"))">
+            </select>
+            <span class="text-danger" asp-validation-for="CategoryId"></span>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-4">
+                <input class="form-check-input" asp-for="HasDelivery">
+                <label class="form-check-label" asp-for="HasDelivery">Has Delivery</label>
+            </div>
+            <div class="form-group col-4">
+                <input class="form-check-input" asp-for="HasTakeAway">
+                <label class="form-check-label" asp-for="HasTakeAway">Has TakeAway</label>
+            </div>
+            <div class="form-group col-4">
+                <input class="form-check-input" asp-for="IsRecommended">
+                <label class="form-check-label" asp-for="IsRecommended">Is Recommended</label>
+            </div>
+            <span class="text-danger" asp-validation-for="HasDelivery"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MainImage">Upload restaurant's main image</label>
+            <input type="file" asp-for="MainImage" />
+            <span class="text-danger" asp-validation-for="MainImage"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Images">Upload restaurant's other images</label>
+            <input asp-for="Images" />
+            <span class="text-danger" asp-validation-for="Images"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+

@@ -1,0 +1,74 @@
+﻿@model HomeViewModel
+@{
+    ViewBag.HeaderClass = "transparent-header";
+    Setting setting = Model.Setting;
+    List<ContactCard> contactCards = Model.ContactCards;
+}
+
+
+
+    <!-- HERO SECTION -->
+    <main class="contact">
+        <div class="hero-section d-flex flex-column justify-content-center" style="background-image: url(../../uploads/settings/@setting.ContactHeroSecBgImg);">
+            <div class="container">
+                <div class="row">
+                    <h1>@setting.ContactHeroSecTitle</h1>
+                    <p>@setting.ContactHeroSecSubtitle</p>
+                </div>
+            </div>
+            <div class="waves" style="background-image: url(../../assets/images/wave_white.svg);"></div>
+        </div>
+    </main>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact-details">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in contactCards)
+                {
+                    <div class="col-lg-4 mb-3">
+                        <div class="detail-box">
+                            @Html.Raw(item.Icon)
+                            <h2 class="my-2">@item.Title</h2>
+                            <a href="#">@item.Subtitle</a>
+                            <small class="d-block">@item.WorkingHours</small>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- MAP AND FORM SECTION -->
+    <section class="map-section">
+        <div class="container">
+            <h2>Drop Us a Line</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-5">
+                    <form method="post" asp-action="contactmessage">
+                        @if (!User.IsInRole("Member"))
+                        {
+                            <div class="form-group mb-3">
+                                <input type="text" asp-for="ContactMessageVM.Name" class="form-control" placeholder="Name" autocomplete="off">
+                            </div>
+                            <span class="text-danger" asp-validation-for="ContactMessageVM.Name"></span>
+                            <div class="form-group mb-3">
+                                <input type="email" asp-for="ContactMessageVM.Email" class="form-control" placeholder="Email" autocomplete="off">
+                            </div>
+                            <span class="text-danger" asp-validation-for="ContactMessageVM.Email"></span>
+                        }
+                        <div class="form-group mb-3">
+                            <textarea asp-for="ContactMessageVM.Message" style="height: 150px;" class="form-control" placeholder="Message"></textarea>
+                        </div>
+                        <span class="text-danger" asp-validation-for="ContactMessageVM.Message"></span>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="col-lg-8">
+                    @Html.Raw(setting.ContactMapUrl)
+                </div>
+            </div>
+        </div>
+    </section>
+
+

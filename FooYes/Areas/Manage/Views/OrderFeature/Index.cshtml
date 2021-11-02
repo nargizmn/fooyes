@@ -1,0 +1,82 @@
+﻿@model List<OrderFeature>
+@{ 
+    ViewData["Title"] = "Order Features";
+    int prevPage = ViewBag.SelectedPage - 1;
+    int nextPage = ViewBag.SelectedPage + 1;
+    int count = (ViewBag.SelectedPage - 1) * 3 + 1;
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Order Features</h1>
+        <a class="btn btn-info" asp-action="create">Add new</a>
+    </div>
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subtitle</th>
+                    <th scope="col">Image</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@(count++)</th>
+                        <td>@item.Title</td>
+                        <td>@item.Subtitle</td>
+                        <td>
+                            <div class="img-box d-inline-block" style="position:relative;max-width:150px">
+                                <img src="~/uploads/orderfeatures/@item.Image" style="max-width:150px"/>
+                            </div>
+                        </td>
+                        <td class="text-nowrap">
+                            <a asp-action="edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="delete" asp-route-id="@item.Id" class="btn btn-danger delete-item">Delete</a>
+                        </td>
+                    </tr>            
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.SelectedPage==1?"disabled":"")">
+                    <a class="page-link" asp-action="index" asp-route-page="@(ViewBag.SelectedPage-1)" tabindex="-1">Previous</a>
+                </li>
+                @if (prevPage > 1)
+                {
+                    <li>...</li>
+                    for (int i = prevPage; i <= nextPage && i <= ViewBag.TotalPage; i++)
+                    {
+                        <li class="page-item @(ViewBag.SelectedPage == i ? "active" : "")"><a class="page-link" asp-action="index" asp-route-page="@i">@i</a></li>
+                    }
+                    if (nextPage < ViewBag.TotalPage)
+                    {
+                        <li>...</li>
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= 3 && i <= ViewBag.TotalPage; i++)
+                    {
+                        <li class="page-item @(ViewBag.SelectedPage == i ? "active" : "")"><a class="page-link " asp-action="index" asp-route-page="@i">@i</a></li>
+                    }
+                    if (ViewBag.TotalPage > 3)
+                    {
+                        <li>...</li>
+                    }
+                }
+                <li class="page-item @(ViewBag.SelectedPage==ViewBag.TotalPage?"disabled":"")">
+                    <a class="page-link" asp-action="index" asp-route-page="@(ViewBag.SelectedPage+1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

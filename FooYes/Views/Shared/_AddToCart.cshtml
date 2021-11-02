@@ -1,0 +1,71 @@
+﻿@model Meal
+
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">@Model.Name</h4>
+            <button type="button" class="modal-close-btn">x</button>
+        </div>
+        <form method="get" asp-action="addtocart" asp-route-id="@Model.Id">
+            <div class="modal-body">
+                <div class="meal-img">
+                    <img src="~/uploads/meals/@Model.Image" />
+                </div>
+                <h5 class="mb-1">Quantity</h5>
+                <div class="quantity-row d-flex justify-content-between align-items-center mb-4">
+                    <i class="quantity-minus fas fa-minus"></i>
+                    <input class="quantity-input" type="text" value="1" name="count">
+                    <i class="quantity-plus fas fa-plus"></i>
+                </div>
+                @if (Model.MealSizes.Count > 0)
+                {
+                    <h5 class="mb-1">Size</h5>
+                    <ul class="custom-radio-box list-group pb-3 flex-column">
+                        @foreach (var item in Model.MealSizes)
+                        {
+                            <li class="list-group-item d-flex justify-content-between">
+                                <div class="size">
+                                    <input id="@item.Size.Name" value="@item.Size.Id" class="d-none" type="radio" name="sizeId">
+                                    <span class="checked d-inline-block"></span>
+                                    <label for="@item.Size.Name" name="size">@item.Size.Name</label>
+                                </div>
+                                <div class="price-per-size">
+                                    <span>+ $@item.Size.ExtraCharge</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-4">
+                    <button type="button" class="modal-cancel-btn">Cancel</button>
+                </div>
+                <div class="col-md-8">
+                    <button type="submit" class="d-block add-to-cart-btn">Add to cart</button>
+                </div>
+            </div>
+        </form>     
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    //INCREASE AND DECREASE FOOD QUANTITY
+    $('.quantity-minus').on('click', function () {
+        if ($('.quantity-input').val() > 1) {
+            $('.quantity-input').val(+ $('.quantity-input').val() - 1);
+        }
+    });
+
+    $('.quantity-plus').on('click', function () {
+        $('.quantity-input').val(+ $('.quantity-input').val() + 1);
+    });
+
+    //CHOOSE MEAL SIZE
+    $('.checked').on('click', function () {
+        $(this).prev().prop('checked', !$(this).prev().prop('checked'));
+    });
+</script>

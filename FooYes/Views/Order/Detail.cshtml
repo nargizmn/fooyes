@@ -1,0 +1,79 @@
+﻿@model Order
+@{
+    ViewBag.HeaderClass = "white-header";
+    Restaurant restaurant = Model.OrderItems.FirstOrDefault().Meal.Restaurant;
+}
+
+<div class="container py-5">
+    <div class="card align-items-center" style="width:max-content; margin:0 auto;padding: 0 5em;">
+        <h1 style="padding:.5em">Order Details</h1>
+        <div class="card-body">
+            <h4 class="card-title"><strong style="padding-right:1em;">Address:</strong>@Model.City / @Model.Address</h4>
+            <h4 class="card-title"><strong style="padding-right:1em;">Phone number:</strong>@Model.Phone</h4>
+            <h4 class="card-title"><strong style="padding-right:1em;">Postal Code: </strong>@Model.PostalCode</h4>
+            <h4 class="card-title"><strong style="padding-right:1em;">Delivery Type:</strong>@Model.DeliveryType</h4>
+            @if (Model.DeliveryDate != null && Model.DeliveryTime != null)
+            {
+                <h4 class="card-title"><strong style="padding-right:1em;">Delivery Date: </strong>@Model.DeliveryDate</h4>
+                <h4 class="card-title"><strong style="padding-right:1em;">Delivery Time: </strong>@Model.DeliveryTime</h4>
+            }
+            else
+            {
+                <h4 class="card-title"><strong style="padding-right:1em;">Delivery Time: </strong>Now</h4>
+            }
+            @if (Model.AdminNote != null)
+            {
+                <h4 class="card-title"><strong style="padding-right:1em;">Admin note: </strong>@Model.AdminNote</h4>
+            }
+            @if (Model.Status == true && Model.DeliveryType.ToLower() == "delivery")
+            {
+                <h4 class="card-title"><strong style="padding-right:1em;">Rider: </strong>@Model.Rider.Fullname</h4>
+            }
+            <h4 class="card-title">
+                <strong style="padding-right:1em;">Status:</strong>
+                @if (Model.Status == null)
+                {
+                    <span class="badge" style="background-color: #ffc107;color: white;">Pending</span>
+                }
+                else if (Model.Status == true)
+                {
+                    <span class="badge" style="background-color: #198754;color: white;">Accepted</span>
+                }
+                else
+                {
+                    <span class="badge" style="background-color: #dc3545;color: white;">Rejected</span>
+                }
+            </h4>
+
+
+            <h3 class="card-title pt-3"><strong style="padding-right:1em;">Products: </strong></h3>
+            <ul class="pb-3">
+                @foreach (var item in Model.OrderItems)
+                {
+
+                    <li class="list-group-item pb-3">
+                        <h4 class="card-title mb-0">@item.Meal.Name X @item.Count - Total: @(Math.Round(item.Count*(restaurant.CampaignId!=null && restaurant.Campaign.ExpireDate>=DateTime.Now?(double)item.Meal.DiscountedPrice:item.Meal.Price),1))$ </h4>
+                        @if (item.SizeId != null)
+                        {
+                            <small class="card-title">@item.Meal.MealSizes.Select(x => x.Size).FirstOrDefault(x => x.Id == item.Size.Id).Name   + $@(item.Count*item.Meal.MealSizes.Select(x => x.Size).FirstOrDefault(x => x.Id == item.Size.Id).ExtraCharge)</small>
+                        }
+                    </li>
+                }
+            </ul>
+            @if (Model.DeliveryType == "Delivery")
+            {
+                <h4 class="mb-2">Delivery Fee : @Model.OrderItems.FirstOrDefault().Meal.Restaurant.DeliveryFee$</h4>
+            }
+            <h3>Total Price : @Model.TotalPrice$</h3>
+            <a asp-action="seeorders" class="mt-4 btn btn-primary" style="color:white;">Back to order's list</a>
+        </div>
+    </div>
+</div>
+
+@section style{ 
+    <style>
+        body {
+            background: ghostwhite;
+        }
+    </style>
+}
